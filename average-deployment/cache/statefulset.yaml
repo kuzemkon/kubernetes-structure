@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: average-cache
+spec:
+  selector:
+    matchLabels:
+      app: average-cache # has to match .spec.template.metadata.labels
+  serviceName: "average-cache"
+  minReadySeconds: 10 # by default is 0
+  template:
+    metadata:
+      labels:
+        app: average-cache # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: average-cache
+        image: registry.hub.docker.com/library/average-cache
+        ports:
+        - containerPort: 80
+          name: default
+        volumeMounts:
+        - name: default
+          mountPath: /var/lib/data
+  volumeClaimTemplates:
+  - metadata:
+      name: default
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "my-storage-class"
+      resources:
+        requests:
+          storage: 1Gi

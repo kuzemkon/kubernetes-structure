@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: average
+  labels:
+    app: average
+spec:
+  selector:
+    matchLabels:
+      app: average
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: average
+    spec:
+      containers:
+       —name: average
+          image: registry.hub.docker.com/library/average
+          ports:
+           —containerPort: 3000

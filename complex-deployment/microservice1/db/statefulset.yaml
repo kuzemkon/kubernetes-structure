@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: complex-db-1
+spec:
+  selector:
+    matchLabels:
+      app: complex-db-1 # has to match .spec.template.metadata.labels
+  serviceName: "complex-db-1"
+  minReadySeconds: 10 # by default is 0
+  template:
+    metadata:
+      labels:
+        app: complex-db-1 # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: complex-db-1
+        image: registry.hub.docker.com/library/complex-db-1
+        ports:
+        - containerPort: 80
+          name: default
+        volumeMounts:
+        - name: default
+          mountPath: /var/lib/data
+  volumeClaimTemplates:
+  - metadata:
+      name: default
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "my-storage-class"
+      resources:
+        requests:
+          storage: 1Gi

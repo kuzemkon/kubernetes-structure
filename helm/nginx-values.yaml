@@ -1,0 +1,13 @@
+controller:
+  admissionWebhooks:
+    enabled: false
+  service:
+    externalTrafficPolicy: "Local"
+  config:
+    use-gzip: true
+    load-balance: ewma
+    enable-real-ip: true
+    max-worker-connections: 0
+    ssl-redirect: false
+    force-ssl-redirect: false
+    proxy-body-size: 10m

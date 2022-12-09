@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complex-2
+  labels:
+    app: complex-2
+spec:
+  selector:
+    matchLabels:
+      app: complex-2
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: complex-2
+    spec:
+      containers:
+       —name: complex-2
+          image: registry.hub.docker.com/library/complex-2
+          ports:
+           —containerPort: 3000
